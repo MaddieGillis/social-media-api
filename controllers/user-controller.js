@@ -46,7 +46,7 @@ const userController = {
 //PUT one user
 
 updateUser({params, body}, res) {
-    User.findOneAndUpdate({_id: params.id}), body, {new: true, runValidators: true}
+    User.findOneAndUpdate({_id: params.id}, body, { new: true, runValidators: true })
     .then(dbUserData => {
         if(!dbUserData) {
             res.status(404).json({message: "Error User Not Found"});
@@ -75,10 +75,10 @@ deleteUser({params}, res) {
 //Add friend
 
 addFriend({params}, res) {
-    User.findOneAndUpdate({_id: params.id}, {$pull: { friends: params.friendId}}, {new: true})
+    User.findOneAndUpdate({_id: params.id}, {$push: { friends: params.friendId}}, {new: true})
     .populate({path: 'friends', select: '-__v'})
     .select('-__v')
-    then(dbUserData => {
+    .then(dbUserData => {
         if(!dbUserData) {
             res.status(404).json({message: "Error User Not Found"});
             return;
@@ -91,7 +91,7 @@ addFriend({params}, res) {
 //Delete friend
 
 deleteFriend({ params }, res) {
-    User.findOneAndUpdate({_id: params}, {$pull: { friends: params.friendId}}, {new: true})
+    User.findOneAndUpdate({_id: params.id}, {$pull: { friends: params.friendId}}, {new: true})
     .populate({path: 'friends', select: '-__v'})
     .select('-__v')
     .then(dbUserData =>{
