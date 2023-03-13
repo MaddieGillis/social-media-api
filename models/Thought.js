@@ -1,10 +1,10 @@
 const { Schema, model, Types } = require('mongoose');
 
-const reactionSchema = new mongoose.Schema(
+const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId();
+            default: () => new Types.ObjectId()
         },
 
         reactionBody: {
@@ -29,11 +29,11 @@ const reactionSchema = new mongoose.Schema(
 reactionSchema.set('toObject', { getters: true }); 
 reactionSchema.set('toJSON', { getters: true }); 
 
-reactionSchema.path('createdAt').get(function(value) {
+reactionSchema.path('createdAt').get(function (value) {
   return value.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 });
 
-const thoughtSchema = new mongoose.Schema(
+const thoughtSchema = new Schema(
     {
         thoughtText: {
             type: String,
@@ -50,9 +50,9 @@ const thoughtSchema = new mongoose.Schema(
         username: {
             type: String,
             required: true
-        }.
+        },
 
-        reactions: [reactionScheama]
+        reactions: [reactionSchema]
 
     }
 );
@@ -62,9 +62,9 @@ const thoughtSchema = new mongoose.Schema(
 thoughtSchema.set('toObject', { getters: true });
 thoughtSchema.set('toJSON', { getters: true });
 
-thoughtSchema.path('createdAt').getfunction(value) {
+thoughtSchema.path('createdAt').get(function (value) {
     return value.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
+});
 
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
